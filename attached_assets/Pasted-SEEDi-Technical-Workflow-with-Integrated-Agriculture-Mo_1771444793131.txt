@@ -1,0 +1,233 @@
+SEEDi Technical Workflow with Integrated Agriculture Modules
+SEEDi is a mobile web-based agrifood decision-support platform that transforms structured
+agricultural knowledge into clear, comparable, context-aware insights for farmers, advisors,
+policymakers, and SMEs.a guided intelligence system.
+Core Design Principle
+Instead of many tabs and confusion, SEEDi works through:
+4 Clear Workflow Steps
+1 Define Context
+2 Explore & Compare
+3 Analyze & Simulate
+4. Generate Action Output
+Everything fitsinside these 4 stages.
+SEEDi
+Sustainable Evidence for Emerging Decisions
+ The Problem
+Agricultural decision-makers operate in an environment of growing complexity:
+Expanding datasets
+Thousands of documented innovations
+Diverse geographic and socio-economic contexts
+Urgent sustainability and inclusion goals
+While information is abundant, translating it into clear, context-specific decisions remains
+difficult. Stakeholders must manually interpret data, compare innovations, assess readiness,
+and evaluate trade-offs — often without structured guidance.
+The gap is not information.
+The gap is decision clarity.
+ The Solution
+SEEDi is a context-aware decision navigation platform that transforms structured agricultural
+innovation data into ranked, explainable action pathways.
+By combining user-defined context with validated innovation metadata,
+SEEDi:
+• Filters solutions based on geography, priorities, and constraints
+• Scores feasibility using readiness and adoption levels
+• Highlights trade-offs between impact, risk, and scalability
+• Generates structured decision summaries
+• Makes reasoning transparent and traceable
+SEEDi helps users move from complexity to clarity in a guided, structured flow.
+ Who It Is For
+SEEDi supports:
+▪ Policymakers designing agricultural strategies
+▪ Development organizations planning interventions
+▪ Impact investors assessing innovation maturity
+▪ Researchers conducting gap and systems analysis
+▪ Program designers working in LMIC and climate-vulnerable regions
+▪ It is especially valuable where decisions must balance:
+o Sustainability
+o Inclusion
+o Scalability
+o Resource constraints
+ Value Proposition
+SEEDi delivers:
+✔ Context-driven filtering rather than generic search
+✔ Ranked pathways instead of long result lists
+✔ Transparent scoring grounded in structured datasets
+✔ Clear trade-off visualization
+✔ Downloadable, decision-ready briefs
+It turns agricultural knowledge into actionable, explainable decision intelligence.
+ Core Differentiator
+SEEDi integrates:
+• Structured innovation repositories
+• Contextual user inputs
+• Rule-based scoring logic
+• Explainable AI summarization
+The result is a guided navigation experience that reduces cognitive overload and
+supports confident, evidence-based agricultural decision-making.
+The SEEDi Workflow (Clean + Reversible)
+[Datasets Input]
+ │ - ATIO Knowledge Base JSON
+ │ - FAOSTAT crop & post-harvest data
+ │ - User persona/context data
+ │ - Home Dashboard Data (Weather/Pest Alerts, Soil Health, Water Use, Crop Diversity,
+Food Loss)
+ ▼
+[Data Preprocessing & Normalization]
+ │ - Merge datasets
+ │ - Standardize taxonomies (crop types, regions, use cases)
+ │ - Tag readiness & adoption levels
+ ▼
+STEP 1: DEFINE CONTEXT
+User selects:
+• Role: Farmer / Policy Maker / SME / Researcher
+• Region/Country & Agro-ecological zone
+• Crop type (optional)
+• Objective:
+o Increase production
+o Reduce losses
+o Improve sustainability
+o Increase income
+o Add value
+o Improve water use
+o Improve soil health
+Optional filters: Farm size, Budget level, Climate risk level
+Context Panel Integration:
+• Location | Season | Zone
+• [ Weather Alert ] [ Pest Alert ]
+• Soil Health Score | Water Use Level
+• Crop Diversity Count | Food Loss %
+ ▼
+[Step 1: Persona & Context Capture]
+ │ - User selects persona, region, crop focus
+ │ - Create context object for filtering
+ ▼
+[Step 2: Context-Aware Filtering]
+ │ - Filter innovations by Geography/Sub-region, Crop type, Innovation
+stage, Use cases
+ ▼
+STEP 2: EXPLORE & COMPARE
+Core Agriculture Modules (structured as innovation cards):
+1. Crop Production
+• Crop calendars (seasonal & agro-ecological zone based)
+• Seed selection & varieties
+• Land preparation methods
+• Intercropping & crop rotation
+• Climate-smart cropping practices
+2. Soil Health & Fertility
+• Soil type identification
+• Organic matter management
+• Composting & green manures
+• Biofertilizers
+• Soil erosion control methods
+3. Water Management
+• Irrigation scheduling
+• Water-use efficiency tips
+• Rainwater harvesting
+• Groundwater recharge methods
+• Drainage & flood risk management
+• Drought adaptation practices
+4. Integrated Pest & Disease Management (IPM)
+• Pest and disease identification (photo-based)
+• Economic threshold levels
+• Biological control options
+• Botanical pesticides
+• Safe chemical use (last option)
+• Resistance management
+ ▼
+[Step 3: Structured Innovation Cards]
+ │ - Generate cards with: Name & description, Challenges addressed,
+ │ Readiness & adoption level, SDG alignment, Value-added suggestions,
+Source/provider links
+ ▼
+[Step 4: Side-by-Side Comparison]
+ │ - Compare 2–5 innovations
+ │ - Visual scoring (impact, feasibility, SDG alignment)
+ │ - Highlight actionable insights
+ ▼
+STEP 3: ANALYZE & SIMULATE
+Post-Harvest Management Analysis:
+• Harvest maturity indicators
+• Proper harvesting techniques
+• On-farm handling practices
+• Cleaning, grading & sorting
+• Storage methods (traditional & modern)
+• Cold chain & packaging
+• Loss estimation (% loss calculator)
+Sustainability Dashboard Integration:
+Agroecological Practices
+• Crop diversification
+• Mixed farming systems
+• Agroforestry models
+• Cover crops & mulching
+• Strip cropping
+• Landscape-level management
+Climate-Smart Agriculture
+• Climate risk alerts
+• Crop suitability under climate change
+• Heat & drought tolerant crops
+• Flood-resilient practices
+• Carbon-smart farming
+Biodiversity & Ecosystem Services
+• On-farm biodiversity tracking
+• Pollinator-friendly practices
+• Natural enemy conservation
+• Buffer zones & riparian strips
+• Soil organisms & ecosystem services
+Livestock & Integrated Farming
+• Crop–livestock integration
+• Fodder management
+• Manure recycling
+• Animal health basics
+• Integrated nutrient cycles
+ ▼
+[Step 5: Decision & Recommendation Summary]
+ │ - Output ranked recommendations
+ │ - Include contextual insights
+ │ - Exportable as PDF/CSV
+ ▼
+STEP 4: GENERATE ACTION OUTPUT
+Knowledge, Policy & Community Integration:
+Farmer Knowledge Hub
+• Short videos & infographics
+• Local best practices
+• Indigenous knowledge
+• Success stories
+• FAQ section
+Policies, Standards & Certifications
+• Organic standards
+• GAP standards
+• National agri policies
+• Environmental regulations
+• Subsidies & support programs
+Community & Advisory
+• Expert chat / advisory
+• Farmer discussion boards
+• Local language support
+• Peer-to-peer learning
+• Feedback & reporting tools
+ ▼
+[Step 6: Optional Iteration & Feedback]
+ │ - User adjusts filters or personas
+ │ - Compare alternate crops/regions
+ │ - Feedback loop improves future recommendations
+ ▼
+[Step 7: Optional AI Assistance Layer]
+ │ - Suggest additional relevant innovations
+ │ - Summarize long descriptions into 1–2 lines
+ │ - Flag readiness/adoption mismatches
+ ▼
+[End User Output]
+ │ - Condensed, actionable insights
+ │ - Clear, user-friendly guidance for decision-making
+SEEDi Action Brief Output
+Final output includes:
+• Selected practices from all modules
+• Context summary with dashboard metrics
+• Key indicators (Yield potential, Post-harvest loss %, Soil health score, Water-use
+efficiency, Biodiversity index, Carbon impact, Income projection, Market potential)
+• Risk notes and sustainability impact
+• Value-added product suggestions
+• Exportable formats for different user types
+Navigation Structure:
+• Left Sidebar: All agriculture modules (1-4, 6-9, 14-16)
+• Top Bar: Context panel with real-time dashboard data
+• Main Panel: Cards/Comparison/Analytics
+• Breadcrumb: Home > Context > Module > Comparison
