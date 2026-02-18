@@ -8,16 +8,20 @@ import {
   STAGE_NAMES,
 } from "@/constants/data";
 
+export interface UserProfile {
+  name: string;
+  role: string;
+}
+
 interface SeedContextValue {
   projects: DecisionProject[];
   currentProject: DecisionProject | null;
   innovations: Innovation[];
   filteredInnovations: Innovation[];
   isLoading: boolean;
-  soilHealth: number;
-  waterEfficiency: number;
-  biodiversityIndex: number;
-  postHarvestLoss: number;
+  userProfile: UserProfile | null;
+  isOnboarded: boolean;
+  setUserProfile: (profile: UserProfile) => Promise<void>;
   createProject: (title: string) => Promise<DecisionProject>;
   updateProjectContext: (projectId: string, context: UserContext) => Promise<void>;
   setCurrentProject: (project: DecisionProject | null) => void;
@@ -30,33 +34,43 @@ interface SeedContextValue {
 const SeedContext = createContext<SeedContextValue | null>(null);
 
 const PROJECTS_KEY = "@seedi_projects";
+const PROFILE_KEY = "@seedi_profile";
 
 export function SeedProvider({ children }: { children: ReactNode }) {
   const [projects, setProjects] = useState<DecisionProject[]>([]);
   const [currentProject, setCurrentProject] = useState<DecisionProject | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  const soilHealth = 62;
-  const waterEfficiency = 52;
-  const biodiversityIndex = 71;
-  const postHarvestLoss = 18;
+  const [userProfile, setUserProfileState] = useState<UserProfile | null>(null);
 
   useEffect(() => {
-    loadProjects();
+    loadData();
   }, []);
 
-  const loadProjects = async () => {
+  const loadData = async () => {
     try {
-      const stored = await AsyncStorage.getItem(PROJECTS_KEY);
-      if (stored) {
-        setProjects(JSON.parse(stored));
-      }
+      const [storedProjects, storedProfile] = await Promise.all([
+        AsyncStorage.getItem(PROJECTS_KEY),
+        AsyncStorage.getItem(PROFILE_KEY),
+      ]);
+      if (storedProjects) setProjects(JSON.parse(storedProjects));
+      if (storedProfile) setUserProfileState(JSON.parse(storedProfile));
     } catch (e) {
-      console.error("Failed to load projects:", e);
+      console.error("Failed to load data:", e);
     } finally {
       setIsLoading(false);
     }
   };
+
+  const setUserProfile = async (profile: UserProfile) => {
+    try {
+      await AsyncStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+      setUserProfileState(profile);
+    } catch (e) {
+      console.error("Failed to save profile:", e);
+    }
+  };
+
+  const isOnboarded = !!userProfile;
 
   const saveProjects = async (updated: DecisionProject[]) => {
     try {
@@ -165,10 +179,9 @@ export function SeedProvider({ children }: { children: ReactNode }) {
       innovations: MOCK_INNOVATIONS,
       filteredInnovations,
       isLoading,
-      soilHealth,
-      waterEfficiency,
-      biodiversityIndex,
-      postHarvestLoss,
+      userProfile,
+      isOnboarded,
+      setUserProfile,
       createProject,
       updateProjectContext,
       setCurrentProject,
@@ -177,7 +190,7 @@ export function SeedProvider({ children }: { children: ReactNode }) {
       deleteProject,
       completeProject,
     }),
-    [projects, currentProject, filteredInnovations, isLoading]
+    [projects, currentProject, filteredInnovations, isLoading, userProfile, isOnboarded]
   );
 
   return <SeedContext.Provider value={value}>{children}</SeedContext.Provider>;
