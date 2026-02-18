@@ -5,11 +5,13 @@ SEEDi is a mobile agricultural decision-support platform that helps farmers, pol
 
 ## Architecture
 - **Frontend**: Expo React Native (Router-based) with tab navigation
-- **Backend**: Express server on port 5000 (landing page + API)
+- **Backend**: Express server on port 5000 (landing page + API + auth)
+- **Database**: PostgreSQL (Neon) for users and sessions
 - **Data**: ATIO Knowledge Base - 3,075 innovations loaded from JSON files in attached_assets/
+- **Auth**: Email/password signup+login with bcrypt, session tokens. Google OAuth placeholder.
 - **State Management**: AsyncStorage for local persistence, React Context for shared state
-- **Fonts**: DM Sans via @expo-google-fonts/dm-sans
-- **Theme**: Green/earth agricultural palette defined in constants/colors.ts
+- **Fonts**: DM Sans + Playfair Display via Google Fonts (landing page)
+- **Theme**: Green/earth agricultural palette (--green: #2D8B4E, --earth: #1A2B1F, --sand: #F5F0E8)
 
 ## Project Structure
 ```
@@ -51,6 +53,11 @@ contexts/
 - GET /api/taxonomy?vocabulary= - Taxonomy terms (readiness levels, adoption levels, SDGs, etc.)
 - GET /api/data-sources - Data source information
 - GET /api/stats - Aggregate counts (3,075 innovations, 200 countries, etc.)
+- POST /api/auth/signup - {name, email, password} -> {token, user}
+- POST /api/auth/login - {email, password} -> {token, user}
+- GET /api/auth/me - Bearer token -> {user}
+- POST /api/auth/logout - Bearer token -> logout
+- GET /api/auth/google - Google OAuth (placeholder)
 
 ## Key Features
 1. Minimalist landing page with real agricultural images and SEEDi branding
@@ -66,8 +73,9 @@ contexts/
 Farmer, Policymaker, SME, Researcher, Investor, Extension Worker
 
 ## Recent Changes
+- 2026-02-18: Redesigned landing page with creative layout: hero mosaic, marquee, about section, 4-step workflow, stats band, features grid, sign-up/login (Google + email), image gallery, full footer
+- 2026-02-18: Added PostgreSQL-backed auth system (signup, login, sessions) with bcrypt password hashing
 - 2026-02-18: Added real ATIO data loading (3,075 innovations) with API endpoints
-- 2026-02-18: Created minimalist SEEDi landing page with stock agricultural images
 - 2026-02-18: Added sign-in/onboarding flow (name + role selection)
 - 2026-02-18: Updated dashboard with personalized greeting, workflow progress, removed top metric icons
 - 2026-02-18: Initial build with full 4-step workflow, dashboard, and all screens
