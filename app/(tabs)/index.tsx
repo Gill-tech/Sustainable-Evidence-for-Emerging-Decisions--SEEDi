@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -14,36 +14,89 @@ import * as Haptics from "expo-haptics";
 import { LinearGradient } from "expo-linear-gradient";
 import Colors from "@/constants/colors";
 import { useSeed } from "@/contexts/SeedContext";
-import { MOCK_ALERTS, STAGE_NAMES, MOCK_INNOVATIONS } from "@/constants/data";
+import { MOCK_ALERTS, STAGE_NAMES } from "@/constants/data";
 
-function TopBar({
-  waterEfficiency,
-  soilHealth,
-  postHarvestLoss,
-}: {
-  waterEfficiency: number;
-  soilHealth: number;
-  postHarvestLoss: number;
-}) {
+function TopBar({ userName }: { userName: string }) {
   return (
     <View style={styles.topBar}>
       <View style={styles.topBarLeft}>
         <MaterialCommunityIcons name="sprout" size={22} color={Colors.primary} />
         <Text style={styles.topBarBrand}>SEEDi</Text>
       </View>
-      <View style={styles.topBarMetrics}>
-        <View style={styles.metric}>
-          <Ionicons name="water" size={13} color={Colors.info} />
-          <Text style={styles.metricText}>{waterEfficiency}%</Text>
+      <View style={styles.topBarRight}>
+        <View style={styles.avatarCircle}>
+          <Text style={styles.avatarText}>
+            {userName.charAt(0).toUpperCase()}
+          </Text>
         </View>
-        <View style={styles.metric}>
-          <MaterialCommunityIcons name="terrain" size={13} color="#8B6914" />
-          <Text style={styles.metricText}>{soilHealth}%</Text>
-        </View>
-        <View style={styles.metric}>
-          <Ionicons name="warning" size={13} color={Colors.danger} />
-          <Text style={styles.metricText}>{postHarvestLoss}%</Text>
-        </View>
+      </View>
+    </View>
+  );
+}
+
+const WORKFLOW_STEPS = [
+  { key: 1, label: "Define Context", icon: "create-outline" as const, route: "/workflow/define-context" },
+  { key: 2, label: "Explore & Compare", icon: "search-outline" as const, route: "/workflow/explore-compare" },
+  { key: 3, label: "Analyze & Simulate", icon: "analytics-outline" as const, route: "/workflow/analyze-simulate" },
+  { key: 4, label: "Generate Action", icon: "document-text-outline" as const, route: "/workflow/generate-action" },
+];
+
+function WorkflowProgress({ currentStage }: { currentStage: number }) {
+  return (
+    <View style={styles.workflowCard}>
+      <Text style={styles.workflowTitle}>Decision Workflow</Text>
+      <View style={styles.workflowSteps}>
+        {WORKFLOW_STEPS.map((step, index) => {
+          const isActive = step.key === currentStage;
+          const isDone = step.key < currentStage;
+          return (
+            <View key={step.key} style={styles.workflowStep}>
+              <View style={styles.workflowStepRow}>
+                <View
+                  style={[
+                    styles.workflowDot,
+                    isDone && styles.workflowDotDone,
+                    isActive && styles.workflowDotActive,
+                  ]}
+                >
+                  {isDone ? (
+                    <Ionicons name="checkmark" size={12} color="#fff" />
+                  ) : (
+                    <Text
+                      style={[
+                        styles.workflowDotNum,
+                        (isActive || isDone) && { color: "#fff" },
+                      ]}
+                    >
+                      {step.key}
+                    </Text>
+                  )}
+                </View>
+                <View style={styles.workflowStepInfo}>
+                  <Text
+                    style={[
+                      styles.workflowStepLabel,
+                      isActive && styles.workflowStepLabelActive,
+                    ]}
+                  >
+                    {step.label}
+                  </Text>
+                  <Text style={styles.workflowStepStatus}>
+                    {isDone ? "Completed" : isActive ? "In Progress" : "Upcoming"}
+                  </Text>
+                </View>
+              </View>
+              {index < WORKFLOW_STEPS.length - 1 && (
+                <View
+                  style={[
+                    styles.workflowLine,
+                    isDone && styles.workflowLineDone,
+                  ]}
+                />
+              )}
+            </View>
+          );
+        })}
       </View>
     </View>
   );
@@ -73,45 +126,28 @@ function StatCard({
   );
 }
 
-function SustainabilityBar({
-  label,
-  value,
-  color,
-}: {
-  label: string;
-  value: number;
-  color: string;
-}) {
-  return (
-    <View style={styles.sustainRow}>
-      <View style={styles.sustainHeader}>
-        <Text style={styles.sustainLabel}>{label}</Text>
-        <Text style={[styles.sustainValue, { color }]}>{value}/100</Text>
-      </View>
-      <View style={styles.sustainTrack}>
-        <View
-          style={[styles.sustainFill, { width: `${value}%`, backgroundColor: color }]}
-        />
-      </View>
-    </View>
-  );
-}
-
 export default function DashboardScreen() {
   const insets = useSafeAreaInsets();
   const {
     projects,
-    soilHealth,
-    waterEfficiency,
-    biodiversityIndex,
-    postHarvestLoss,
+    userProfile,
+    isOnboarded,
+    isLoading,
     createProject,
     setCurrentProject,
   } = useSeed();
   const webTopInset = Platform.OS === "web" ? 67 : 0;
 
+  useEffect(() => {
+    if (!isLoading && !isOnboarded) {
+      router.replace("/onboarding");
+    }
+  }, [isLoading, isOnboarded]);
+
   const activeProjects = projects.filter((p) => p.status === "active");
   const recentProjects = projects.slice(0, 3);
+  const currentStage = activeProjects.length > 0 ? activeProjects[0].currentStage : 1;
+  const firstName = userProfile?.name?.split(" ")[0] || "there";
 
   const handleNewDecision = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -131,13 +167,11 @@ export default function DashboardScreen() {
     router.push(("/" + routes[project.currentStage - 1]) as any);
   };
 
+  if (isLoading) return null;
+
   return (
     <View style={[styles.container, { paddingTop: insets.top + webTopInset }]}>
-      <TopBar
-        waterEfficiency={waterEfficiency}
-        soilHealth={soilHealth}
-        postHarvestLoss={postHarvestLoss}
-      />
+      <TopBar userName={firstName} />
       <ScrollView
         contentContainerStyle={[styles.scrollContent, { paddingBottom: insets.bottom + 100 }]}
         showsVerticalScrollIndicator={false}
@@ -148,7 +182,7 @@ export default function DashboardScreen() {
           end={{ x: 1, y: 1 }}
           style={styles.welcomeBanner}
         >
-          <Text style={styles.welcomeTitle}>Welcome back!</Text>
+          <Text style={styles.welcomeTitle}>Welcome, {firstName}</Text>
           <Text style={styles.welcomeSub}>Start your agricultural decision journey</Text>
           <View style={styles.welcomeActions}>
             <Pressable
@@ -169,12 +203,14 @@ export default function DashboardScreen() {
           </View>
         </LinearGradient>
 
+        <WorkflowProgress currentStage={currentStage} />
+
         <View style={styles.statsGrid}>
           <StatCard
             icon="bulb"
             iconColor={Colors.info}
             iconBg={Colors.infoLight}
-            value={MOCK_INNOVATIONS.length.toLocaleString()}
+            value="3,075"
             label="Innovations"
           />
           <StatCard
@@ -192,11 +228,11 @@ export default function DashboardScreen() {
             label="Reports"
           />
           <StatCard
-            icon="trending-down"
-            iconColor={Colors.danger}
-            iconBg={Colors.dangerLight}
-            value={`${postHarvestLoss}%`}
-            label="Post-Harvest Loss"
+            icon="globe"
+            iconColor={Colors.primary}
+            iconBg={Colors.primaryLight}
+            value="150+"
+            label="Countries"
           />
         </View>
 
@@ -275,15 +311,6 @@ export default function DashboardScreen() {
         </View>
 
         <Text style={[styles.sectionTitle, { paddingHorizontal: 0, marginTop: 8 }]}>
-          Sustainability Snapshot
-        </Text>
-        <View style={styles.sustainCard}>
-          <SustainabilityBar label="Soil Health" value={soilHealth} color={Colors.primary} />
-          <SustainabilityBar label="Water Efficiency" value={waterEfficiency} color={Colors.info} />
-          <SustainabilityBar label="Biodiversity" value={biodiversityIndex} color={Colors.success} />
-        </View>
-
-        <Text style={[styles.sectionTitle, { paddingHorizontal: 0, marginTop: 8 }]}>
           Quick Actions
         </Text>
         <View style={styles.quickActions}>
@@ -335,9 +362,22 @@ const styles = StyleSheet.create({
   },
   topBarLeft: { flexDirection: "row", alignItems: "center", gap: 6 },
   topBarBrand: { fontSize: 20, fontFamily: "DMSans_700Bold", color: Colors.primary },
-  topBarMetrics: { flexDirection: "row", gap: 12 },
-  metric: { flexDirection: "row", alignItems: "center", gap: 3 },
-  metricText: { fontSize: 12, fontFamily: "DMSans_600SemiBold", color: Colors.textSecondary },
+  topBarRight: { flexDirection: "row", alignItems: "center" },
+  avatarCircle: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    backgroundColor: Colors.primaryLight,
+    borderWidth: 2,
+    borderColor: Colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  avatarText: {
+    fontSize: 14,
+    fontFamily: "DMSans_700Bold",
+    color: Colors.primary,
+  },
   scrollContent: { paddingHorizontal: 20 },
   welcomeBanner: {
     borderRadius: 20,
@@ -374,6 +414,70 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255,255,255,0.4)",
   },
   secondaryBtnText: { fontSize: 14, fontFamily: "DMSans_500Medium", color: Colors.textInverse },
+  workflowCard: {
+    backgroundColor: Colors.surface,
+    borderRadius: 18,
+    padding: 18,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: Colors.cardBorder,
+  },
+  workflowTitle: {
+    fontSize: 16,
+    fontFamily: "DMSans_600SemiBold",
+    color: Colors.text,
+    marginBottom: 16,
+  },
+  workflowSteps: { gap: 0 },
+  workflowStep: {},
+  workflowStepRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  workflowDot: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: Colors.borderLight,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: Colors.border,
+  },
+  workflowDotActive: {
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
+  },
+  workflowDotDone: {
+    backgroundColor: Colors.success,
+    borderColor: Colors.success,
+  },
+  workflowDotNum: {
+    fontSize: 12,
+    fontFamily: "DMSans_700Bold",
+    color: Colors.textMuted,
+  },
+  workflowStepInfo: { flex: 1 },
+  workflowStepLabel: {
+    fontSize: 14,
+    fontFamily: "DMSans_600SemiBold",
+    color: Colors.text,
+  },
+  workflowStepLabelActive: { color: Colors.primary },
+  workflowStepStatus: {
+    fontSize: 12,
+    fontFamily: "DMSans_400Regular",
+    color: Colors.textMuted,
+  },
+  workflowLine: {
+    width: 2,
+    height: 18,
+    backgroundColor: Colors.borderLight,
+    marginLeft: 13,
+    marginVertical: 2,
+  },
+  workflowLineDone: { backgroundColor: Colors.success },
   statsGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -455,21 +559,6 @@ const styles = StyleSheet.create({
   alertContent: { flex: 1 },
   alertMessage: { fontSize: 13, fontFamily: "DMSans_500Medium", color: Colors.text, lineHeight: 18 },
   alertTime: { fontSize: 11, fontFamily: "DMSans_400Regular", color: Colors.textMuted, marginTop: 2 },
-  sustainCard: {
-    backgroundColor: Colors.surface,
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 20,
-    gap: 14,
-    borderWidth: 1,
-    borderColor: Colors.cardBorder,
-  },
-  sustainRow: { gap: 6 },
-  sustainHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  sustainLabel: { fontSize: 13, fontFamily: "DMSans_500Medium", color: Colors.text },
-  sustainValue: { fontSize: 13, fontFamily: "DMSans_600SemiBold" },
-  sustainTrack: { height: 6, backgroundColor: Colors.borderLight, borderRadius: 3 },
-  sustainFill: { height: 6, borderRadius: 3 },
   quickActions: { flexDirection: "row", gap: 10, marginBottom: 20, flexWrap: "wrap" },
   quickAction: {
     flexBasis: "47%",

@@ -22,6 +22,10 @@ function RootLayoutNav() {
     <Stack screenOptions={{ headerBackTitle: "Back" }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen
+        name="onboarding"
+        options={{ headerShown: false, animation: "fade" }}
+      />
+      <Stack.Screen
         name="workflow/define-context"
         options={{ headerShown: false, animation: "slide_from_right" }}
       />
