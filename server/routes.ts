@@ -7,8 +7,12 @@ import {
   getDataSources,
   getStats,
 } from "./data/atio-loader";
+import { initAuthDB, registerAuthRoutes } from "./auth";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  await initAuthDB();
+  registerAuthRoutes(app);
+
   app.get("/api/innovations", (req, res) => {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 20;
