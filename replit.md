@@ -58,6 +58,7 @@ contexts/
 - GET /api/auth/me - Bearer token -> {user}
 - POST /api/auth/logout - Bearer token -> logout
 - GET /api/auth/google - Google OAuth (placeholder)
+- POST /api/ai/ask - {question, context?} -> SSE stream of AI responses (uses gpt-5-nano via Replit AI Integrations)
 
 ## Key Features
 1. Minimalist landing page with real agricultural images and SEEDi branding
@@ -68,11 +69,14 @@ contexts/
 6. Innovation cards with readiness/adoption levels, SDG alignment
 7. Saved decisions management
 8. Reports with templates
+9. AI Assistant (floating chat button on dashboard) - uses OpenAI via Replit AI Integrations for agricultural innovation Q&A with streaming responses
 
 ## User Roles
 Farmer, Policymaker, SME, Researcher, Investor, Extension Worker
 
 ## Recent Changes
+- 2026-02-19: Added AI Assistant - floating chat button on dashboard with streaming AI responses for agricultural innovation Q&A
+- 2026-02-19: Fixed logout modal for web/mobile compatibility (custom modal instead of Alert.alert)
 - 2026-02-18: Redesigned landing page with creative layout: hero mosaic, marquee, about section, 4-step workflow, stats band, features grid, sign-up/login (Google + email), image gallery, full footer
 - 2026-02-18: Added PostgreSQL-backed auth system (signup, login, sessions) with bcrypt password hashing
 - 2026-02-18: Added real ATIO data loading (3,075 innovations) with API endpoints
