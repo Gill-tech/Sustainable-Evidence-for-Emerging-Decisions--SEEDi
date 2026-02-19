@@ -11,7 +11,9 @@ SEEDi is a mobile-first agricultural decision-support platform that helps farmer
 **Deployed App:** [https://sustainable-evidence-decisions.replit.app](https://sustainable-evidence-decisions.replit.app)
 
 **Try on Your Phone:** Download [Expo Go](https://expo.dev/go) from the App Store (iOS) or Google Play (Android), then scan the QR code from the Replit project URL bar to experience the native mobile version.
-<img width="137" height="178" alt="image" src="https://github.com/user-attachments/assets/2cc72d8a-0acf-4435-bbb8-ac47defb340e" />
+
+<img width="145" height="143" alt="image" src="https://github.com/user-attachments/assets/84aa0e8d-4873-4076-9637-b00e173fac0e" />
+
 
 ---
 
