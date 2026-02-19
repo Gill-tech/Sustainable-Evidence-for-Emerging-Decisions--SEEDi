@@ -11,6 +11,7 @@ SEEDi is a mobile-first agricultural decision-support platform that helps farmer
 **Deployed App:** [https://sustainable-evidence-decisions.replit.app](https://sustainable-evidence-decisions.replit.app)
 
 **Try on Your Phone:** Download [Expo Go](https://expo.dev/go) from the App Store (iOS) or Google Play (Android), then scan the QR code from the Replit project URL bar to experience the native mobile version.
+<img width="137" height="178" alt="image" src="https://github.com/user-attachments/assets/2cc72d8a-0acf-4435-bbb8-ac47defb340e" />
 
 ---
 
@@ -172,10 +173,15 @@ npm run expo:dev
 1. **Download Expo Go** from the [App Store (iOS)](https://apps.apple.com/app/expo-go/id982107779) or [Google Play (Android)](https://play.google.com/store/apps/details?id=host.exp.exponent)
 2. **Start the app** on Replit or locally using `npm run expo:dev`
 3. **Scan the QR code** that appears:
+
+   <img width="137" height="178" alt="image" src="https://github.com/user-attachments/assets/ef52c9ea-27a0-4993-979d-c6f96bbe783b" />
+
+
+4. 
    - **On Replit**: Click the URL bar menu and scan the QR code with your phone camera
    - **Locally**: Scan the QR code shown in the terminal
-4. **Expo Go opens** and loads SEEDi natively on your device
-5. The app hot-reloads as you make code changes
+5. **Expo Go opens** and loads SEEDi natively on your device
+6. The app hot-reloads as you make code changes
 
 ### Using a Web Browser
 
@@ -241,3 +247,6 @@ Each role sees personalized relevance explanations on innovation cards:
 | `PGDATABASE` | Database name | Yes (auto-set on Replit) |
 | `EXPO_PUBLIC_DOMAIN` | Deployment domain | Auto-set |
 | `REPLIT_AI_*` | OpenAI integration keys | Auto-managed on Replit |
+
+
+## The End ## 
