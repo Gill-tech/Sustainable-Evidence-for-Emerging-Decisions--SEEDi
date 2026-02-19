@@ -29,35 +29,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const stats = getStats();
       const sampleInnovations = getInnovations(1, 5, { search: question });
 
-      const systemPrompt = `You are SEEDi AI, an expert agricultural innovation assistant. You help farmers, policymakers, investors, and researchers find the right agricultural innovations for their unique situation.
+      const innovationContext = sampleInnovations.data.length > 0
+        ? sampleInnovations.data.slice(0, 3).map((inn: any) =>
+            `- ${inn.title} (${inn.type || 'Innovation'}): ${inn.short_description || inn.long_description?.substring(0, 200) || 'Agricultural innovation'}`
+          ).join('\n')
+        : '';
 
-You have access to the ATIO Knowledge Base with ${stats.totalInnovations} innovations across ${stats.totalCountries}+ countries aligned with ${stats.totalSdgs} SDGs.
+      const systemPrompt = `You are SEEDi AI, a knowledgeable and helpful agricultural innovation advisor. You assist farmers, policymakers, investors, researchers, and SMEs in discovering agricultural innovations suited to their unique situation.
 
-${sampleInnovations.data.length > 0 ? `Here are some relevant innovations from the database:\n${sampleInnovations.data.slice(0, 3).map((inn: any) => `- ${inn.title}: ${inn.description?.substring(0, 150) || 'No description'}`).join('\n')}` : ''}
+You draw from the ATIO Knowledge Base containing ${stats.totalInnovations} innovations across ${stats.totalCountries}+ countries aligned with ${stats.totalSdgs} Sustainable Development Goals.
 
-${context ? `User context: ${context}` : ''}
-
-Keep responses concise (2-4 paragraphs max). Be practical and actionable. When relevant, mention specific innovations from the knowledge base.`;
+${innovationContext ? `Relevant innovations from the database:\n${innovationContext}\n` : ''}${context ? `User's current context: ${context}\n` : ''}
+Guidelines:
+- Always be helpful and provide substantive answers about agriculture, food systems, sustainability, and innovation.
+- Keep responses concise (2-4 short paragraphs).
+- Reference specific innovations from the knowledge base when relevant.
+- Provide practical, actionable advice.
+- You may discuss SDGs, climate adaptation, post-harvest management, irrigation, soil health, pest management, and all agricultural topics.`;
 
       res.setHeader("Content-Type", "text/event-stream");
       res.setHeader("Cache-Control", "no-cache");
       res.setHeader("Connection", "keep-alive");
 
       const stream = await openai.chat.completions.create({
-        model: "gpt-5-nano",
+        model: "gpt-4o-mini",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: question },
         ],
         stream: true,
-        max_completion_tokens: 1024,
+        max_tokens: 1024,
       });
 
+      let hasContent = false;
       for await (const chunk of stream) {
         const content = chunk.choices[0]?.delta?.content || "";
         if (content) {
+          hasContent = true;
           res.write(`data: ${JSON.stringify({ content })}\n\n`);
         }
+      }
+
+      if (!hasContent) {
+        res.write(`data: ${JSON.stringify({ content: "I'd be happy to help with your agricultural innovation questions. Could you provide more details about your specific situation, such as your region, crops, or the challenges you're facing? This will help me recommend the most relevant innovations from our knowledge base." })}\n\n`);
       }
 
       res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
@@ -65,7 +79,7 @@ Keep responses concise (2-4 paragraphs max). Be practical and actionable. When r
     } catch (error) {
       console.error("AI ask error:", error);
       if (res.headersSent) {
-        res.write(`data: ${JSON.stringify({ error: "AI request failed" })}\n\n`);
+        res.write(`data: ${JSON.stringify({ error: "AI request failed. Please try again." })}\n\n`);
         res.end();
       } else {
         res.status(500).json({ error: "AI request failed" });

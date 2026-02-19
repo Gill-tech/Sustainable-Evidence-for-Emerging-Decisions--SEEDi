@@ -1,0 +1,255 @@
+Explore & Compare Innovations
+Browse 10 innovations ranked for your context
+
+Adjust Weights
+
+Sort by Score
+Hermetic Storage Technology
+Post-Harvest
+Airtight storage bags that prevent post-harvest losses from insects and moisture, reducing storage losses by up to 98%.
+
+74
+Score
+Readiness Level
+9/9
+Adoption Level
+7/9
+Loss Reduction
+Storage
+Food Security
+SDG Alignment:
+2
+12
+Risk Level
+low
+Scalability
+high
+GrainPro
+ATIO KB v2.1
+Details
+Compare
+Solar-Powered Drip Irrigation System
+Technology
+An off-grid water-efficient irrigation solution that reduces water usage by 40% while increasing crop yields through precise water delivery.
+
+71
+Score
+Readiness Level
+8/9
+Adoption Level
+6/9
+Water Efficiency
+Climate Adaptation
+Yield Improvement
+SDG Alignment:
+2
+6
+13
+Risk Level
+low
+Scalability
+high
+AgroTech Solutions
+ATIO KB v2.1
+Details
+Compare
+Climate-Smart Crop Varieties (Drought-Tolerant)
+Input
+Genetically improved seed varieties that maintain yields under water stress conditions, reducing crop failure risk by 45%.
+
+70
+Score
+Readiness Level
+9/9
+Adoption Level
+6/9
+Climate Adaptation
+Yield Stability
+Risk Reduction
+SDG Alignment:
+2
+13
+Risk Level
+low
+Scalability
+high
+CGIAR Research Centers
+ATIO KB v2.1
+Details
+Compare
+Integrated Pest Management (IPM) Kit
+Practice
+Comprehensive biological pest control system combining beneficial insects, pheromone traps, and organic sprays.
+
+67
+Score
+Readiness Level
+8/9
+Adoption Level
+5/9
+Pest Control
+Sustainability
+Health
+SDG Alignment:
+2
+3
+12
+Risk Level
+low
+Scalability
+high
+EcoPest Solutions
+ATIO KB v2.1
+Details
+Compare
+Digital Farm Advisory Platform
+Service
+Mobile app providing personalized agronomic advice, weather forecasts, and market prices using AI and local data.
+
+67
+Score
+Readiness Level
+8/9
+Adoption Level
+5/9
+Decision Support
+Market Access
+Knowledge Transfer
+SDG Alignment:
+2
+8
+9
+Risk Level
+low
+Scalability
+high
+FarmWise Digital
+ATIO KB v2.1
+Details
+Compare
+Mobile Grain Milling Service
+Processing
+On-demand mobile milling units that process grain at farm-gate, reducing transport costs and adding value locally.
+
+64
+Score
+Readiness Level
+8/9
+Adoption Level
+4/9
+Value Addition
+Income Generation
+Market Access
+SDG Alignment:
+2
+8
+9
+Risk Level
+medium
+Scalability
+medium
+AgriProcess Hub
+ATIO KB v2.1
+Details
+Compare
+Composting & Biogas System
+Technology
+Integrated waste management system converting farm waste into compost and biogas for cooking and energy.
+
+60
+Score
+Readiness Level
+7/9
+Adoption Level
+4/9
+Waste Management
+Energy
+Soil Health
+SDG Alignment:
+7
+12
+13
+Risk Level
+medium
+Scalability
+medium
+BioEnergy Solutions
+ATIO KB v2.1
+Details
+Compare
+Bio-Fertilizer with Nitrogen-Fixing Bacteria
+Input
+Organic fertilizer enriched with beneficial bacteria that enhance soil health and reduce chemical fertilizer dependency by 30%.
+
+59
+Score
+Readiness Level
+7/9
+Adoption Level
+5/9
+Soil Health
+Sustainability
+Cost Reduction
+SDG Alignment:
+2
+15
+Risk Level
+medium
+Scalability
+medium
+BioSoil Innovations
+ATIO KB v2.1
+Details
+Compare
+IoT Soil Moisture Sensors
+Technology
+Real-time soil moisture monitoring system that optimizes irrigation scheduling and reduces water waste by 35%.
+
+57
+Score
+Readiness Level
+7/9
+Adoption Level
+3/9
+Water Efficiency
+Precision Agriculture
+Data-Driven Decisions
+SDG Alignment:
+6
+9
+13
+Risk Level
+medium
+Scalability
+high
+FarmSense Technologies
+ATIO KB v2.1
+Details
+Compare
+Cold Chain Solar Coolers
+Post-Harvest
+Solar-powered refrigeration units for perishable crops, extending shelf life by 7-10 days and reducing losses.
+
+53
+Score
+Readiness Level
+6/9
+Adoption Level
+3/9
+Loss Reduction
+Value Addition
+Market Access
+SDG Alignment:
+2
+7
+12
+Risk Level
+high
+Scalability
+medium
+ColdSolar Inc.
+ATIO KB v2.1
+Details
+Compare
+Back to Context
+Continue to Analysis

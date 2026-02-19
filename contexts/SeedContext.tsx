@@ -21,6 +21,10 @@ interface SeedContextValue {
   isLoading: boolean;
   userProfile: UserProfile | null;
   isOnboarded: boolean;
+  soilHealth: number;
+  waterEfficiency: number;
+  biodiversityIndex: number;
+  postHarvestLoss: number;
   setUserProfile: (profile: UserProfile) => Promise<void>;
   logout: () => Promise<void>;
   createProject: (title: string) => Promise<DecisionProject>;
@@ -81,6 +85,11 @@ export function SeedProvider({ children }: { children: ReactNode }) {
   };
 
   const isOnboarded = !!userProfile;
+
+  const soilHealth = 42;
+  const waterEfficiency = 38;
+  const biodiversityIndex = 35;
+  const postHarvestLoss = 28;
 
   const saveProjects = async (updated: DecisionProject[]) => {
     try {
@@ -191,6 +200,10 @@ export function SeedProvider({ children }: { children: ReactNode }) {
       isLoading,
       userProfile,
       isOnboarded,
+      soilHealth,
+      waterEfficiency,
+      biodiversityIndex,
+      postHarvestLoss,
       setUserProfile,
       logout,
       createProject,
