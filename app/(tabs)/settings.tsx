@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable, Switch, Platform, Alert } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable, Switch, Platform, Modal } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -14,22 +14,16 @@ export default function SettingsScreen() {
   const [regionAlerts, setRegionAlerts] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
 
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
   const handleLogout = () => {
-    Alert.alert(
-      "Log Out",
-      "Are you sure you want to log out?",
-      [
-        { text: "Cancel", style: "cancel" as const },
-        {
-          text: "Log Out",
-          style: "destructive" as const,
-          onPress: async () => {
-            await logout();
-            router.replace("/onboarding");
-          },
-        },
-      ]
-    );
+    setShowLogoutConfirm(true);
+  };
+
+  const confirmLogout = async () => {
+    setShowLogoutConfirm(false);
+    await logout();
+    router.replace("/onboarding");
   };
 
   const roleName = userProfile?.role
@@ -148,6 +142,37 @@ export default function SettingsScreen() {
 
         <Text style={styles.version}>SEEDi v1.0.0</Text>
       </ScrollView>
+
+      <Modal
+        visible={showLogoutConfirm}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowLogoutConfirm(false)}
+      >
+        <Pressable style={styles.modalOverlay} onPress={() => setShowLogoutConfirm(false)}>
+          <Pressable style={styles.modalCard} onPress={() => {}}>
+            <View style={styles.modalIconWrap}>
+              <Ionicons name="log-out-outline" size={28} color={Colors.danger} />
+            </View>
+            <Text style={styles.modalTitle}>Log Out?</Text>
+            <Text style={styles.modalDesc}>Are you sure you want to log out of SEEDi?</Text>
+            <View style={styles.modalActions}>
+              <Pressable
+                style={({ pressed }) => [styles.modalCancelBtn, pressed && { opacity: 0.8 }]}
+                onPress={() => setShowLogoutConfirm(false)}
+              >
+                <Text style={styles.modalCancelText}>Cancel</Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [styles.modalLogoutBtn, pressed && { opacity: 0.8 }]}
+                onPress={confirmLogout}
+              >
+                <Text style={styles.modalLogoutText}>Log Out</Text>
+              </Pressable>
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </View>
   );
 }
@@ -220,4 +245,30 @@ const styles = StyleSheet.create({
   },
   logoutText: { fontSize: 16, fontFamily: "DMSans_600SemiBold", color: Colors.danger },
   version: { textAlign: "center" as const, fontSize: 12, fontFamily: "DMSans_400Regular", color: Colors.textMuted, marginTop: 20, marginBottom: 40 },
+  modalOverlay: {
+    flex: 1, backgroundColor: "rgba(0,0,0,0.45)",
+    justifyContent: "center", alignItems: "center", padding: 32,
+  },
+  modalCard: {
+    backgroundColor: "#fff", borderRadius: 24, padding: 28,
+    width: "100%", maxWidth: 340, alignItems: "center",
+  },
+  modalIconWrap: {
+    width: 56, height: 56, borderRadius: 28, backgroundColor: Colors.dangerLight,
+    alignItems: "center", justifyContent: "center", marginBottom: 16,
+  },
+  modalTitle: { fontSize: 20, fontFamily: "DMSans_700Bold", color: Colors.text, marginBottom: 8 },
+  modalDesc: { fontSize: 15, fontFamily: "DMSans_400Regular", color: Colors.textSecondary, textAlign: "center", marginBottom: 24, lineHeight: 22 },
+  modalActions: { flexDirection: "row", gap: 12, width: "100%" },
+  modalCancelBtn: {
+    flex: 1, paddingVertical: 14, borderRadius: 14,
+    backgroundColor: Colors.background, alignItems: "center",
+    borderWidth: 1, borderColor: Colors.cardBorder,
+  },
+  modalCancelText: { fontSize: 15, fontFamily: "DMSans_600SemiBold", color: Colors.text },
+  modalLogoutBtn: {
+    flex: 1, paddingVertical: 14, borderRadius: 14,
+    backgroundColor: Colors.danger, alignItems: "center",
+  },
+  modalLogoutText: { fontSize: 15, fontFamily: "DMSans_600SemiBold", color: "#fff" },
 });
