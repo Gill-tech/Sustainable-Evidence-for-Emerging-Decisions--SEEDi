@@ -1,15 +1,40 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable, Switch, Platform } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable, Switch, Platform, Alert } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import Colors from "@/constants/colors";
+import { useSeed } from "@/contexts/SeedContext";
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const webTopInset = Platform.OS === "web" ? 67 : 0;
+  const { userProfile, logout } = useSeed();
   const [notifications, setNotifications] = useState(true);
   const [regionAlerts, setRegionAlerts] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
+
+  const handleLogout = () => {
+    Alert.alert(
+      "Log Out",
+      "Are you sure you want to log out?",
+      [
+        { text: "Cancel", style: "cancel" as const },
+        {
+          text: "Log Out",
+          style: "destructive" as const,
+          onPress: async () => {
+            await logout();
+            router.replace("/onboarding");
+          },
+        },
+      ]
+    );
+  };
+
+  const roleName = userProfile?.role
+    ? userProfile.role.charAt(0).toUpperCase() + userProfile.role.slice(1)
+    : "User";
 
   const sections = [
     {
@@ -68,11 +93,13 @@ export default function SettingsScreen() {
       >
         <View style={styles.profileCard}>
           <View style={styles.avatar}>
-            <Ionicons name="person" size={28} color={Colors.textInverse} />
+            <Text style={styles.avatarText}>
+              {(userProfile?.name || "U").charAt(0).toUpperCase()}
+            </Text>
           </View>
           <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>SEEDi User</Text>
-            <Text style={styles.profileRole}>Farmer</Text>
+            <Text style={styles.profileName}>{userProfile?.name || "SEEDi User"}</Text>
+            <Text style={styles.profileRole}>{roleName}</Text>
           </View>
           <Ionicons name="chevron-forward" size={18} color={Colors.textMuted} />
         </View>
@@ -111,6 +138,14 @@ export default function SettingsScreen() {
           </View>
         ))}
 
+        <Pressable
+          style={({ pressed }) => [styles.logoutBtn, pressed && { opacity: 0.85, transform: [{ scale: 0.98 }] }]}
+          onPress={handleLogout}
+        >
+          <Ionicons name="log-out-outline" size={20} color={Colors.danger} />
+          <Text style={styles.logoutText}>Log Out</Text>
+        </Pressable>
+
         <Text style={styles.version}>SEEDi v1.0.0</Text>
       </ScrollView>
     </View>
@@ -141,6 +176,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  avatarText: { fontSize: 22, fontFamily: "DMSans_700Bold", color: "#fff" },
   profileInfo: { flex: 1 },
   profileName: { fontSize: 17, fontFamily: "DMSans_600SemiBold", color: Colors.text },
   profileRole: { fontSize: 13, fontFamily: "DMSans_400Regular", color: Colors.textSecondary, marginTop: 2 },
@@ -170,5 +206,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   settingLabel: { fontSize: 15, fontFamily: "DMSans_500Medium", color: Colors.text },
+  logoutBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    backgroundColor: Colors.dangerLight,
+    paddingVertical: 16,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "rgba(231,76,60,0.15)",
+    marginTop: 8,
+  },
+  logoutText: { fontSize: 16, fontFamily: "DMSans_600SemiBold", color: Colors.danger },
   version: { textAlign: "center" as const, fontSize: 12, fontFamily: "DMSans_400Regular", color: Colors.textMuted, marginTop: 20, marginBottom: 40 },
 });

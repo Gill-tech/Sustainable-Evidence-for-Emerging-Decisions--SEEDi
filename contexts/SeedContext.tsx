@@ -22,6 +22,7 @@ interface SeedContextValue {
   userProfile: UserProfile | null;
   isOnboarded: boolean;
   setUserProfile: (profile: UserProfile) => Promise<void>;
+  logout: () => Promise<void>;
   createProject: (title: string) => Promise<DecisionProject>;
   updateProjectContext: (projectId: string, context: UserContext) => Promise<void>;
   setCurrentProject: (project: DecisionProject | null) => void;
@@ -67,6 +68,15 @@ export function SeedProvider({ children }: { children: ReactNode }) {
       setUserProfileState(profile);
     } catch (e) {
       console.error("Failed to save profile:", e);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await AsyncStorage.removeItem(PROFILE_KEY);
+      setUserProfileState(null);
+    } catch (e) {
+      console.error("Failed to logout:", e);
     }
   };
 
@@ -182,6 +192,7 @@ export function SeedProvider({ children }: { children: ReactNode }) {
       userProfile,
       isOnboarded,
       setUserProfile,
+      logout,
       createProject,
       updateProjectContext,
       setCurrentProject,

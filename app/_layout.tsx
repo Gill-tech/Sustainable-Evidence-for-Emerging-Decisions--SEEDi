@@ -1,12 +1,12 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Stack } from "expo-router";
+import { Stack, router, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { queryClient } from "@/lib/query-client";
-import { SeedProvider } from "@/contexts/SeedContext";
+import { SeedProvider, useSeed } from "@/contexts/SeedContext";
 import {
   useFonts,
   DMSans_400Regular,
@@ -18,6 +18,22 @@ import {
 SplashScreen.preventAutoHideAsync();
 
 function RootLayoutNav() {
+  const { isOnboarded, isLoading } = useSeed();
+  const segments = useSegments();
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    const inTabs = segments[0] === "(tabs)";
+    const inWorkflow = segments[0] === "workflow";
+
+    if (!isOnboarded && (inTabs || inWorkflow)) {
+      router.replace("/onboarding");
+    } else if (isOnboarded && segments[0] === "onboarding") {
+      router.replace("/(tabs)");
+    }
+  }, [isOnboarded, isLoading, segments]);
+
   return (
     <Stack screenOptions={{ headerBackTitle: "Back" }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
