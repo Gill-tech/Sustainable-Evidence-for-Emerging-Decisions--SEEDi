@@ -15,6 +15,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Colors from "@/constants/colors";
 import { useSeed } from "@/contexts/SeedContext";
 import { MOCK_ALERTS, STAGE_NAMES } from "@/constants/data";
+import AIAssistant from "@/components/AIAssistant";
 
 function TopBar({ userName }: { userName: string }) {
   return (
@@ -347,6 +348,7 @@ export default function DashboardScreen() {
           </Pressable>
         </View>
       </ScrollView>
+      <AIAssistant />
     </View>
   );
 }
